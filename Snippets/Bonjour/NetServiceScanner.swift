@@ -1,9 +1,16 @@
 import Foundation
-import Network
 
+protocol NetServiceScannerDelegate: AnyObject {
+    func foundDeviceForService(_ service: NetService)
+    func getServiceType() -> String
+}
+
+/// Legacy `NetServiceBrowser` wrapper that resolves found services (5s timeout)
+/// and reports them through a delegate.
 class NetServiceScanner: NSObject {
     private var browser: NetServiceBrowser!
     private var services = [NetService]()
+    weak var delegate: (any NetServiceScannerDelegate)?
 
     override init() {
         super.init()
@@ -12,7 +19,9 @@ class NetServiceScanner: NSObject {
     }
 
     func start() {
-        browser.searchForServices(ofType: "_<service>._tcp", inDomain: "")
+        guard let type = delegate?.getServiceType() else { return }
+        print("Starting scanning for \(type)")
+        browser.searchForServices(ofType: type, inDomain: "")
     }
 
     func stop() {
@@ -33,11 +42,15 @@ extension NetServiceScanner: NetServiceBrowserDelegate {
         print("Removed: \(service.name)")
         services.removeAll { $0 === service }
     }
+
+    func netServiceBrowserWillSearch(_ browser: NetServiceBrowser) {
+        print("Start scanning")
+    }
 }
 
 extension NetServiceScanner: NetServiceDelegate {
     func netServiceDidResolveAddress(_ sender: NetService) {
         print("Resolved: \(sender.name) hostName=\(String(describing: sender.hostName)) port=\(sender.port)")
+        delegate?.foundDeviceForService(sender)
     }
 }
-

@@ -1,10 +1,11 @@
-import Network
+import Foundation
 
+/// Modern `NWBrowser` (Network framework) alternative to the legacy
+/// `NetServiceScanner`. Prints discovered services as they appear.
 class BonjourBrowser {
     private var browser: NWBrowser?
 
-    func startBrowsing() {
-        let serviceType = "_<service>._tcp"
+    func startBrowsing(serviceType: String = "_<service>._tcp") {
         let parameters = NWParameters()
 
         browser = NWBrowser(for: .bonjour(type: serviceType, domain: nil), using: parameters)
@@ -13,7 +14,7 @@ class BonjourBrowser {
             print("Browser state: \(newState)")
         }
 
-        browser?.browseResultsChangedHandler = { results, changes in
+        browser?.browseResultsChangedHandler = { results, _ in
             for result in results {
                 let endpoint = result.endpoint
                 switch endpoint {
