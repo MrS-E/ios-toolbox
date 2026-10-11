@@ -1,6 +1,6 @@
-# ios-snippets
+# ios-toolbox
 
-A collection of iOS / Swift snippets, helpers, and small utilities — copy-paste fodder for app development, extracted from real experiments and playgrounds.
+A personal iOS toolbox — a growing collection of Swift snippets, helpers, and small utilities for app development, extracted from real experiments and playgrounds.
 
 ## Layout
 
@@ -11,9 +11,14 @@ Snippets/
 ├── Bonjour/                 # Network discovery (mDNS / Bonjour)
 │   ├── NetServiceScanner.swift   # legacy NetServiceBrowser wrapper + delegate
 │   └── BonjourBrowser.swift      # modern NWBrowser (Network framework)
-└── Foundation/              # Foundation helpers
-    └── Device.swift              # Codable model + string sanitizing + JSON encoding
+├── Combine/                 # Combine helpers (publishers, subscribers, operators)
+├── Foundation/              # Foundation helpers
+│   └── Device.swift              # Codable model + string sanitizing + JSON encoding
+├── Networking/              # URLSession, requests, small API utilities
+└── SwiftUI/                 # Views, modifiers, reusable components
 ```
+
+Topic folders each carry a short `README.md` describing what belongs there. Create a new folder when a snippet doesn't fit an existing topic.
 
 ## Snippets
 
